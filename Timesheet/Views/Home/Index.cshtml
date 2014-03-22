@@ -1,69 +1,14 @@
-﻿@model IEnumerable<Timesheet.Models.Project>
-
-@{
+﻿@{
     ViewBag.Title = "Timesheet";
 }
 
-<h2>My Projects</h2>
-
-<p>
-    @Html.ActionLink("Create new", "Create", "Projects")
-</p>
-<table class="table">
-    <tr>
-        <th>
-            @Html.DisplayNameFor(model => model.Name)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Client)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Description)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.IncomePerHour)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.IsClosed)
-        </th>
-        <th></th>
-    </tr>
-
-    @foreach (var item in Model)
-    {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Name)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Client)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Description)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.IncomePerHour)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.IsClosed)
-            </td>
-            <td>
-                @Html.ActionLink("Edit", "Edit", new { id = item.Id }) |
-                @Html.ActionLink("Details", "Details", new { id = item.Id }) |
-                @Html.ActionLink("Delete", "Delete", new { id = item.Id })
-            </td>
-        </tr>
-    }
-
-</table>
-
-<!-- <div class="jumbotron">
-    <h1>ASP.NET</h1>
-    <p class="lead">ASP.NET is a free web framework for building great Web sites and Web applications using HTML, CSS and JavaScript.</p>
-    <p><a href="http://asp.net" class="btn btn-primary btn-large">Learn more &raquo;</a></p>
+<div class="jumbotron">
+    <h1>Timesheet</h1>
+    <p class="lead">Time tracking web application.</p>
+    @*<p><a href="http://asp.net" class="btn btn-primary btn-large">Learn more &raquo;</a></p>*@
 </div>
 
-<div class="row">
+@*<div class="row">
     <div class="col-md-4">
         <h2>Getting started</h2>
         <p>
@@ -83,4 +28,4 @@
         <p>You can easily find a web hosting company that offers the right mix of features and price for your applications.</p>
         <p><a class="btn btn-default" href="http://go.microsoft.com/fwlink/?LinkId=301867">Learn more &raquo;</a></p>
     </div>
-</div> -->
+</div>*@

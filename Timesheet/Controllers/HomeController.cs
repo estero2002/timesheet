@@ -13,19 +13,19 @@
 
         public ActionResult Index()
         {
-            return View(db.Projects.ToList());
+            return View();
         }
 
         public ActionResult About()
         {
-            ViewBag.Message = "Your application description page.";
+            ViewBag.Message = "Time tracking web application.";
 
             return View();
         }
 
         public ActionResult Contact()
         {
-            ViewBag.Message = "Your contact page.";
+            ViewBag.Message = "Contact information not available.";
 
             return View();
         }

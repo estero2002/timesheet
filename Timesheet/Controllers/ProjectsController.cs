@@ -1,24 +1,35 @@
 ﻿namespace Timesheet.Controllers
 {
     using Microsoft.AspNet.Identity;
+    using Microsoft.AspNet.Identity.EntityFramework;
     using System;
     using System.Collections.Generic;
     using System.Data;
     using System.Data.Entity;
     using System.Linq;
     using System.Net;
+    using System.Threading.Tasks;
     using System.Web;
     using System.Web.Mvc;
     using Timesheet.Models;
 
+    [Authorize]
     public class ProjectsController : Controller
     {
-        private TimesheetContext db = new TimesheetContext();
+        private TimesheetContext db;
+        private UserManager<ApplicationUser> userManager;
 
+        public ProjectsController()
+        {
+            this.db = new TimesheetContext();
+            this.userManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(db));
+        }
         // GET: /Project/
         public ActionResult Index()
         {
-            return View(db.Projects.ToList());
+            var currentUser = this.userManager.FindById(User.Identity.GetUserId());
+
+            return View(db.Projects.ToList().Where(p => p.User.Id == currentUser.Id));
         }
 
         // GET: /Project/Details/5
@@ -47,13 +58,17 @@
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include="Id,Name,Client,Description,IncomePerHour,IsClosed")] Project project)
+        public async Task<ActionResult> Create([Bind(Include="Name,Client,Description,IncomePerHour")] Project project)
         {
             if (ModelState.IsValid)
             {
+                var currentUser = await userManager.FindByIdAsync(User.Identity.GetUserId());
+
                 project.Id = Guid.NewGuid();
+                project.User = currentUser;
+
                 db.Projects.Add(project);
-                db.SaveChanges();
+                await db.SaveChangesAsync();
                 return RedirectToAction("Index");
             }
 
