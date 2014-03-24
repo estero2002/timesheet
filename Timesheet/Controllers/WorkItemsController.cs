@@ -8,78 +8,79 @@
     using System.Data.Entity;
     using System.Linq;
     using System.Net;
-    using System.Threading.Tasks;
     using System.Web;
     using System.Web.Mvc;
     using Timesheet.Models;
 
     [Authorize]
-    public class ProjectsController : Controller
+    public class WorkItemsController : Controller
     {
         private TimesheetContext db;
         private UserManager<ApplicationUser> userManager;
 
-        public ProjectsController()
+        public WorkItemsController()
         {
             this.db = new TimesheetContext();
             this.userManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(db));
         }
 
-        // GET: /Project/
-        public ActionResult Index()
+        // GET: /WorkItems/
+        //public ActionResult Index()
+        //{
+        //    return View(db.Tasks.ToList());
+        //}
+
+        // GET: /WorkItems/Details/5
+        //public ActionResult Details(Guid? id)
+        //{
+        //    if (id == null)
+        //    {
+        //        return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+        //    }
+
+        //    WorkItem workitem = db.Tasks.Find(id);
+
+        //    if (workitem == null)
+        //    {
+        //        return HttpNotFound();
+        //    }
+
+        //    return View(workitem);
+        //}
+
+        // GET: /WorkItems/Create
+        public ActionResult Create(Guid projectId)
         {
             var currentUser = this.userManager.FindById(User.Identity.GetUserId());
+            var project = db.Projects.SingleOrDefault(p => p.Id == projectId && p.User.Id == currentUser.Id);
 
-            return View(db.Projects.ToList().Where(p => p.User.Id == currentUser.Id));
-        }
-
-        // GET: /Project/Details/5
-        public ActionResult Details(Guid? id)
-        {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-
-            Project project = db.Projects.Find(id);
-
-            if (project == null)
+            if(project == null)
             {
                 return HttpNotFound();
             }
 
-            return View(project);
+            return View(new WorkItem { From = DateTime.Now, IncomePerHour = project.IncomePerHour, ProjectId = projectId });
         }
 
-        // GET: /Project/Create
-        public ActionResult Create()
-        {
-            return View();
-        }
-
-        // POST: /Project/Create
+        // POST: /WorkItems/Create
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Create([Bind(Include="Name,Client,Description,IncomePerHour")] Project project)
+        public ActionResult Create([Bind(Include="From,To,Summary,IncomePerHour,ProjectId")] WorkItem workitem)
         {
             if (ModelState.IsValid)
             {
-                var currentUser = await userManager.FindByIdAsync(User.Identity.GetUserId());
-
-                project.Id = Guid.NewGuid();
-                project.User = currentUser;
-
-                db.Projects.Add(project);
-                await db.SaveChangesAsync();
-                return RedirectToAction("Index");
+                workitem.Id = Guid.NewGuid();
+                db.Tasks.Add(workitem);
+                db.SaveChanges();
+                return RedirectToAction("Details", "Projects", new { Id = workitem.ProjectId });
             }
 
-            return View(project);
+            return View(workitem);
         }
 
-        // GET: /Project/Edit/5
+        // GET: /WorkItems/Edit/5
         public ActionResult Edit(Guid? id)
         {
             if (id == null)
@@ -87,34 +88,34 @@
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
 
-            Project project = db.Projects.Find(id);
+            WorkItem workitem = db.Tasks.Find(id);
 
-            if (project == null)
+            if (workitem == null)
             {
                 return HttpNotFound();
             }
 
-            return View(project);
+            return View(workitem);
         }
 
-        // POST: /Project/Edit/5
+        // POST: /WorkItems/Edit/5
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include="Id,Name,Client,Description,IncomePerHour,IsClosed")] Project project)
+        public ActionResult Edit([Bind(Include="Id,From,To,Summary,IncomePerHour")] WorkItem workitem)
         {
             if (ModelState.IsValid)
             {
-                db.Entry(project).State = EntityState.Modified;
+                db.Entry(workitem).State = EntityState.Modified;
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
 
-            return View(project);
+            return View(workitem);
         }
 
-        // GET: /Project/Delete/5
+        // GET: /WorkItems/Delete/5
         public ActionResult Delete(Guid? id)
         {
             if (id == null)
@@ -122,23 +123,23 @@
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
 
-            Project project = db.Projects.Find(id);
+            WorkItem workitem = db.Tasks.Find(id);
 
-            if (project == null)
+            if (workitem == null)
             {
                 return HttpNotFound();
             }
 
-            return View(project);
+            return View(workitem);
         }
 
-        // POST: /Project/Delete/5
+        // POST: /WorkItems/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(Guid id)
         {
-            Project project = db.Projects.Find(id);
-            db.Projects.Remove(project);
+            WorkItem workitem = db.Tasks.Find(id);
+            db.Tasks.Remove(workitem);
             db.SaveChanges();
             return RedirectToAction("Index");
         }

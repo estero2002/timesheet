@@ -14,6 +14,8 @@
 
         public double IncomePerHour { get; set; }
 
+        public Guid ProjectId { get; set; }
+
         public virtual Project Project { get; set; }
     }
 }

@@ -161,12 +161,17 @@
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ProjectsController.cs" />
+    <Compile Include="Controllers\WorkItemsController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Migrations\201403222014193_ProjectAndWorkItem.cs" />
     <Compile Include="Migrations\201403222014193_ProjectAndWorkItem.Designer.cs">
       <DependentUpon>201403222014193_ProjectAndWorkItem.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201403232335543_AddedProjectId.cs" />
+    <Compile Include="Migrations\201403232335543_AddedProjectId.Designer.cs">
+      <DependentUpon>201403232335543_AddedProjectId.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
@@ -228,6 +233,11 @@
     <Content Include="Views\Projects\Details.cshtml" />
     <Content Include="Views\Projects\Edit.cshtml" />
     <Content Include="Views\Projects\Index.cshtml" />
+    <Content Include="Views\WorkItems\Create.cshtml" />
+    <Content Include="Views\WorkItems\Delete.cshtml" />
+    <Content Include="Views\WorkItems\Details.cshtml" />
+    <Content Include="Views\WorkItems\Edit.cshtml" />
+    <Content Include="Views\WorkItems\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -242,6 +252,9 @@
   <ItemGroup>
     <EmbeddedResource Include="Migrations\201403222014193_ProjectAndWorkItem.resx">
       <DependentUpon>201403222014193_ProjectAndWorkItem.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201403232335543_AddedProjectId.resx">
+      <DependentUpon>201403232335543_AddedProjectId.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

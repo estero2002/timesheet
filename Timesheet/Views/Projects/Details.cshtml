@@ -1,7 +1,7 @@
 ﻿@model Timesheet.Models.Project
 
 @{
-    ViewBag.Title = "Details";
+    ViewBag.Title = "Project" + Model.Name;
 }
 
 <h2>Details</h2>
@@ -52,7 +52,58 @@
 
     </dl>
 </div>
+<div>
+    <h3>Tasks</h3>
+@if (Model.Tasks.Count > 0)
+{
+    <table class="table">
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Tasks.First().From)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Tasks.First().To)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Tasks.First().Summary)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Tasks.First().IncomePerHour)
+            </th>
+            <th></th>
+        </tr>
+
+        @foreach (var item in Model.Tasks)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.From)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.To)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Summary)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.IncomePerHour)
+                </td>
+                <td>
+                    @Html.ActionLink("Edit", "Edit", "WorkItems", new { id = item.Id }, new { }) |
+                    @Html.ActionLink("Details", "Details", "WorkItems", new { id = item.Id }, new { }) |
+                    @Html.ActionLink("Delete", "Delete", "WorkItems", new { id = item.Id }, new { })
+                </td>
+            </tr>
+        }
+    </table>
+}
+else
+{
+    <p>There are no tasks added to this project.</p>
+}
+</div>
+
 <p>
-    @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |
+    @Html.ActionLink("New Task", "Create", "WorkItems", new { projectId = Model.Id }, new {}) |
     @Html.ActionLink("Back to List", "Index")
 </p>
