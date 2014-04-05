@@ -5,7 +5,8 @@
 
     public class TimesheetContext : IdentityDbContext<ApplicationUser>
     {
-        public TimesheetContext() : base("DefaultConnection")
+        public TimesheetContext()
+            : base("yoctoTimesheetDb")
         {
         }
 
