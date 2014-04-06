@@ -59,7 +59,7 @@
                 return HttpNotFound();
             }
 
-            return View(new WorkItem { From = DateTime.Now, IncomePerHour = project.IncomePerHour, ProjectId = projectId });
+            return View(new WorkItem { IncomePerHour = project.IncomePerHour, ProjectId = projectId });
         }
 
         // POST: /WorkItems/Create
